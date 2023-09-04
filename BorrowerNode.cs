@@ -1,5 +1,4 @@
 using System;
-using Borrower;
 
 namespace ToolLibrary
 {
@@ -20,7 +19,7 @@ namespace ToolLibrary
 	        set { aBorrower = value; }
 	    }
 
-	    public BorrowerNode NextBorrower;
+	    public BorrowerNode NextBorrower
 	    {
 	        get { return nextBorrower; }
 	        set { nextBorrower = value; }

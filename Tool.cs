@@ -4,30 +4,45 @@ namespace ToolLibrary
 	public class Tool
 	{
 		private string toolName;
-		private string description;
-		private int quantity;
+		private string toolDescription;
+		private int toolQuantity;
 
 		public string ToolName
 		{
-            get { return toolName;}
-            set { value = toolName;}
+			get { return toolName; }
 		}
 
-		public string Description
+		public string ToolDescription
 		{
-		    get { return description; }
-		    set { value = description; }
+		    get { return toolDescription; }
 		}
 
-		public int Quantity
+		public int ToolQuantity
 		{
-		    get { return quantity; }
-		    set { value = quantity; }
+		    get { return toolQuantity; }
 		}
 
-		public override string ToString()
+        public Tool(string toolName, string description, int quantity)
+        {
+            this.toolName = toolName;
+			this.toolDescription = description;
+			this.toolQuantity = quantity;
+        }
+
+        public int CompareTo(Tool another)
+        {
+            if (this.ToolName.CompareTo(another.ToolName) < 0)
+                return -1;
+            else
+                if (this.ToolName.CompareTo(another.ToolName) == 0)
+					return 0;
+            else
+                return 1;
+        }
+
+        public override string ToString()
 		{
-		    return ("Name: " + toolName + " - Description: " + description + " - Quantity: " + quantity);
+		    return ("Name: " + toolName + " - Description: " + toolDescription + " - Quantity: " + toolQuantity);
 		}
 	}
 }
