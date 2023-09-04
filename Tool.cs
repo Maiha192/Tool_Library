@@ -3,15 +3,31 @@ namespace ToolLibrary
 {
 	public class Tool
 	{
-		public string ToolName { get; set; }
-		public string Description { get; set; }
-		public int Quantity { get; set; }
+		private string toolName;
+		private string description;
+		private int quantity;
 
-		public Tool(string name, string description, int quantity)
+		public string ToolName
 		{
-			this.ToolName = name;
-			this.Description = description;
-			this.Quantity = quantity;
+            get { return toolName;}
+            set { value = toolName;}
+		}
+
+		public string Description
+		{
+		    get { return description; }
+		    set { value = description; }
+		}
+
+		public int Quantity
+		{
+		    get { return quantity; }
+		    set { value = quantity; }
+		}
+
+		public override string ToString()
+		{
+		    return ("Name: " + toolName + " - Description: " + description + " - Quantity: " + quantity);
 		}
 	}
 }
