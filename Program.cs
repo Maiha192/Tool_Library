@@ -69,7 +69,38 @@ namespace ToolLibrary
 
             WriteLine("Welcome to tool management system!");
             DisplayMenu();
-            ChooseOption(toolCategories, categories);
+            int optionNumber = ChooseOption();
+
+            while (optionNumber != 5)
+            {
+                int index = ChooseCategory(categories);
+                switch (optionNumber)
+                {
+                    case 1:
+                        DisplayTool(toolCategories, index);
+                        WriteLine();
+                        break;
+                    case 2:
+                        AddTool(toolCategories, index);
+                        WriteLine();
+                        break;
+                    case 3:
+                        DisplayTool(toolCategories, index);
+                        BorrowTool(toolCategories, index);
+                        WriteLine();
+                        break;
+                    case 4:
+                        DisplayTool(toolCategories, index);
+                        ReturnTool(toolCategories, index);
+                        WriteLine();
+                        break;
+                    case 5:
+                        return;
+                    default:
+                        return;
+                }
+                optionNumber = ChooseOption();
+            }
         }
 
         // Method to display menu options
@@ -83,7 +114,7 @@ namespace ToolLibrary
         }
 
         // Method for user to choose a functional option
-        public static void ChooseOption(ToolLinkedList[] toolCategories, string[] categories)
+        public static int ChooseOption()
         {
             Write("Enter a menu option number between 1 and 5 >> ");
             string optionString = ReadLine() ?? "";
@@ -93,32 +124,7 @@ namespace ToolLibrary
                 Write("Invalid number! Enter an option number between 1 and 5 >> ");
                 optionString = ReadLine() ?? "";
             }
-            WriteLine();
-            int index = ChooseCategory(categories);
-            switch (optionNumber)
-            {
-                case 1:
-                    DisplayTool(toolCategories, index);
-                    WriteLine();
-                    break;
-                case 2:
-                    AddTool(toolCategories, index);
-                    WriteLine();
-                    break;
-                case 3:
-                    DisplayTool(toolCategories, index);
-                    BorrowTool(toolCategories, index);
-                    WriteLine();
-                    break;
-                case 4:
-                    DisplayTool(toolCategories, index);
-                    ReturnTool(toolCategories, index);
-                    WriteLine();
-                    break;
-                case 5:
-                    return;
-            }
-            ChooseOption(toolCategories, categories);
+            return optionNumber;
         }
 
         // Method for user to choose a category from available categories
@@ -174,13 +180,7 @@ namespace ToolLibrary
             Write("Enter tool name >> ");
             string userInput = ReadLine() ?? "";
             Tool newTool = new Tool(userInput);
-            ToolNode newToolNode = new ToolNode(newTool);
-            ToolNode current = toolCategories[index].Head;
-            while (newToolNode.CompareTo(current) != 0)
-            {
-                current = current.NextTool;
-            }
-            if (newToolNode.CompareTo(current) == 0)
+            if (toolCategories[index].SearchTool(newTool))
             {
                 WriteLine("Tool exists in the library!");
                 Write("Add quantity to update >> ");
@@ -188,10 +188,9 @@ namespace ToolLibrary
                 int quantityNumber;
                 while (!int.TryParse(quantityInput, out quantityNumber) || quantityNumber < 1)
                 {
-                    Write("Invalid number! Enter an option number between 1 and 5 >> ");
+                    Write("Invalid number! Enter a number greater than 0 >> ");
                     quantityInput = ReadLine() ?? "";
                 }
-                current.ATool.ToolQuantity += quantityNumber;
                 WriteLine("Tool quantity successfully updated!");
             }
             else
@@ -226,7 +225,7 @@ namespace ToolLibrary
             Write("Enter borrower last name >> ");
             string borrowerLastName = ReadLine() ?? "";
             Write("Enter borrower mobile number >> ");
-            int borrowerMobile = Convert.ToInt32(ReadLine());
+            string borrowerMobile = ReadLine() ?? "";
             WriteLine("Tool successfully borrowed!");
         }
 
@@ -242,7 +241,7 @@ namespace ToolLibrary
             Write("Enter borrower last name >> ");
             string borrowerLastName = ReadLine() ?? "";
             Write("Enter borrower mobile number >> ");
-            int borrowerMobile = Convert.ToInt32(ReadLine());
+            string borrowerMobile = ReadLine() ?? "";
             WriteLine("Tool succcessfully returned!");
 
         }

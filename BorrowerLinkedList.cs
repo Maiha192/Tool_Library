@@ -30,7 +30,12 @@ namespace ToolLibrary
 	        length = 1;
 	    }
 
-	    public void AddNewBorrower(Borrower borrower)
+		public bool SearchBorrower(Borrower borrower)
+		{
+			return false;
+		}
+
+		public void AddNewBorrower(Borrower borrower)
 	    {
 
 	    }

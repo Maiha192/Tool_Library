@@ -26,15 +26,15 @@ namespace ToolLibrary
             this.nextTool = null;
         }
 
-        public int CompareTo(ToolNode another)
-        {
-            if (this.ATool.CompareTo(another.ATool) < 0)
-                return -1;
-            else
-                if (this.ATool.CompareTo(another.ATool) == 0)
-					return 0;
-            else
-                return 1;
-        }
+     //   public int CompareTo(ToolNode another)
+     //   {
+     //       if (this.ATool.CompareTo(another.ATool) < 0)
+     //           return -1;
+     //       else
+     //           if (this.ATool.CompareTo(another.ATool) == 0)
+					//return 0;
+     //       else
+     //           return 1;
+     //   }
     }
 }

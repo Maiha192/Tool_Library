@@ -5,7 +5,7 @@ namespace ToolLibrary
 	{
 		private string firstName;
 		private string lastName;
-		private int mobile;
+		private string mobile;
 
 		public string FirstName
 		{
@@ -17,12 +17,12 @@ namespace ToolLibrary
 			get { return lastName; }
 		}
 
-		public int Mobile
+		public string Mobile
 		{
 			get { return mobile; }
 		}
 
-		public Borrower(string lastName, string firstName, int mobileNumber)
+		public Borrower(string lastName, string firstName, string mobileNumber)
 		{
 			this.lastName = lastName;
 			this.firstName = firstName;
