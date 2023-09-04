@@ -9,8 +9,22 @@ namespace ToolLibrary
     	private ToolNode tail;
     	private int length = 0;
 
+        public ToolNode Head
+        {
+            get { return head; }
+        }
+
+        public ToolNode Tail
+        {
+            get { return tail; }
+        }
+
+        public int Length
+        {
+            get { return length; }
+        }
         // Initialise a linked list of tool by adding the first tool
-    	public ToolLinkedList(Tool tool)
+        public ToolLinkedList(Tool tool)
     	{
     	    ToolNode newTool = new ToolNode(tool);
     	    head = newTool;
@@ -67,7 +81,7 @@ namespace ToolLibrary
 
             while (current != null)
             {
-                current.ATool.ToString();
+                WriteLine("Name: {0} - Description: {1} - Quantity: {2}", current.ATool.ToolName, current.ATool.ToolDescription, current.ATool.ToolQuantity);
                 current = current.NextTool;
             }
         }

@@ -40,7 +40,7 @@ namespace ToolLibrary
 
             // Painting tools
             Tool tool11 = new Tool("paint roller", "used for applying paint to large surfaces", 5);
-            Tool tool12 = new Tool("paintbrush", "used for applying paint to small areas", 5);
+            Tool tool12 = new Tool("paint brush", "used for applying paint to small areas", 5);
             ToolLinkedList painting = new ToolLinkedList(tool11);
             painting.InsertNewTool(tool12);
 
@@ -85,10 +85,10 @@ namespace ToolLibrary
         // Method for user to choose a functional option
         public static void ChooseOption(ToolLinkedList[] toolCategories, string[] categories)
         {
-            Write("Enter an option number between 1 and 5 >> ");
+            Write("Enter a menu option number between 1 and 5 >> ");
             string optionString = ReadLine() ?? "";
             int optionNumber;
-            while (!int.TryParse(optionString, out optionNumber) || optionNumber < 1 || optionNumber > 2)
+            while (!int.TryParse(optionString, out optionNumber) || optionNumber < 1 || optionNumber > 5)
             {
                 Write("Invalid number! Enter an option number between 1 and 5 >> ");
                 optionString = ReadLine() ?? "";
@@ -98,20 +98,27 @@ namespace ToolLibrary
             switch (optionNumber)
             {
                 case 1:
-                    DisplayTool(toolCategories,index);
+                    DisplayTool(toolCategories, index);
+                    WriteLine();
                     break;
                 case 2:
                     AddTool(toolCategories, index);
+                    WriteLine();
                     break;
                 case 3:
+                    DisplayTool(toolCategories, index);
                     BorrowTool(toolCategories, index);
+                    WriteLine();
                     break;
                 case 4:
+                    DisplayTool(toolCategories, index);
                     ReturnTool(toolCategories, index);
+                    WriteLine();
                     break;
                 case 5:
                     return;
             }
+            ChooseOption(toolCategories, categories);
         }
 
         // Method for user to choose a category from available categories
@@ -164,20 +171,80 @@ namespace ToolLibrary
         // Method to add tool to library
         public static void AddTool(ToolLinkedList[] toolCategories, int index)
         {
-            WriteLine("Enter tool name >> ");
-
+            Write("Enter tool name >> ");
+            string userInput = ReadLine() ?? "";
+            Tool newTool = new Tool(userInput);
+            ToolNode newToolNode = new ToolNode(newTool);
+            ToolNode current = toolCategories[index].Head;
+            while (newToolNode.CompareTo(current) != 0)
+            {
+                current = current.NextTool;
+            }
+            if (newToolNode.CompareTo(current) == 0)
+            {
+                WriteLine("Tool exists in the library!");
+                Write("Add quantity to update >> ");
+                string quantityInput = ReadLine() ?? "";
+                int quantityNumber;
+                while (!int.TryParse(quantityInput, out quantityNumber) || quantityNumber < 1)
+                {
+                    Write("Invalid number! Enter an option number between 1 and 5 >> ");
+                    quantityInput = ReadLine() ?? "";
+                }
+                current.ATool.ToolQuantity += quantityNumber;
+                WriteLine("Tool quantity successfully updated!");
+            }
+            else
+            {
+                Write("Enter tool name >> ");
+                string newToolName = ReadLine() ?? "";
+                Write("Enter tool description >> ");
+                string newToolDescription = ReadLine() ?? "";
+                Write("Enter tool quantity >> ");
+                string input = ReadLine() ?? "";
+                int newToolQuantity;
+                while (!int.TryParse(input, out newToolQuantity) || newToolQuantity < 1)
+                {
+                    Write("Invalid number! Enter an option number between 1 and 5 >> ");
+                    input = ReadLine() ?? "";
+                }
+                Tool tool = new Tool(newToolName, newToolDescription, newToolQuantity);
+                toolCategories[index].InsertNewTool(tool);
+                WriteLine("Tool successfully added to library!");
+            }
         }
 
         // Method for user to borrower tool
         public static void BorrowTool(ToolLinkedList[] toolCategories, int index)
         {
-            WriteLine("Enter tool name >> ");
+            Write("Enter borrowed tool name>> ");
+            string borrowedToolName = ReadLine() ?? "";
+            Write("Enter borrowed tool quantity >> ");
+            int borrowedToolQuantity = Convert.ToInt32(ReadLine());
+            Write("Enter borrower first name >> ");
+            string borrowerFirstName = ReadLine() ?? "";
+            Write("Enter borrower last name >> ");
+            string borrowerLastName = ReadLine() ?? "";
+            Write("Enter borrower mobile number >> ");
+            int borrowerMobile = Convert.ToInt32(ReadLine());
+            WriteLine("Tool successfully borrowed!");
         }
 
         // Method for user to return tool
         public static void ReturnTool(ToolLinkedList[] toolCategories, int index)
         {
-            WriteLine("Enter tool name >> ");
+            Write("Enter returned tool name >> ");
+            string returnedToolName = ReadLine() ?? "";
+            Write("Enter returned tool quantity >> ");
+            string returnedToolQuantity = ReadLine() ?? "";
+            Write("Enter borrower first name >> ");
+            string borrowerFirstName = ReadLine() ?? "";
+            Write("Enter borrower last name >> ");
+            string borrowerLastName = ReadLine() ?? "";
+            Write("Enter borrower mobile number >> ");
+            int borrowerMobile = Convert.ToInt32(ReadLine());
+            WriteLine("Tool succcessfully returned!");
+
         }
 
     }

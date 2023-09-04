@@ -10,19 +10,16 @@ namespace ToolLibrary
 		public string FirstName
 		{
 			get { return firstName; }
-			set { value = firstName; }
 		}
 
 		public string LastName
 		{
 			get { return lastName; }
-			set { value = lastName; }
 		}
 
 		public int Mobile
 		{
 			get { return mobile; }
-			set { value = mobile; }
 		}
 
 		public Borrower(string lastName, string firstName, int mobileNumber)

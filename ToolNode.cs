@@ -7,12 +7,7 @@ namespace ToolLibrary
 	    private Tool aTool;
 	    private ToolNode nextTool;
 
-	    public ToolNode(Tool tool)
-	    {
-	        this.aTool = tool;
-	        this.nextTool = null;
-	    }
-
+	    
 	    public Tool ATool
 	    {
 	        get { return aTool; }
@@ -24,6 +19,12 @@ namespace ToolLibrary
 	        get { return nextTool; }
 	        set { nextTool = value; }
 	    }
+
+        public ToolNode(Tool tool)
+        {
+            this.aTool = tool;
+            this.nextTool = null;
+        }
 
         public int CompareTo(ToolNode another)
         {

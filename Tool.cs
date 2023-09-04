@@ -10,16 +10,24 @@ namespace ToolLibrary
 		public string ToolName
 		{
 			get { return toolName; }
+			set { value = toolName; }
 		}
 
 		public string ToolDescription
 		{
 		    get { return toolDescription; }
+			set { value = toolDescription; }
 		}
 
 		public int ToolQuantity
 		{
 		    get { return toolQuantity; }
+			set { value = ToolQuantity;  }
+		}
+
+		public Tool(string toolName)
+		{
+			this.toolName = toolName;
 		}
 
         public Tool(string toolName, string description, int quantity)
@@ -39,11 +47,6 @@ namespace ToolLibrary
             else
                 return 1;
         }
-
-        public override string ToString()
-		{
-		    return ("Name: " + toolName + " - Description: " + toolDescription + " - Quantity: " + toolQuantity);
-		}
 	}
 }
 

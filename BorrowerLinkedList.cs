@@ -6,8 +6,22 @@ namespace ToolLibrary
 	{
 	    private BorrowerNode head;
 	    private BorrowerNode tail;
-	    private int length;
+	    private int length = 0;
 
+		public BorrowerNode Head
+		{
+			get { return head; }
+		}
+
+		public BorrowerNode Tail
+		{
+			get { return tail; }
+		}
+
+		public int Length
+		{
+			get { return length; }
+		}
 	    public BorrowerLinkedList(Borrower borrower)
 	    {
 	        BorrowerNode newBorrower = new BorrowerNode(borrower);
