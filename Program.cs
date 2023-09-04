@@ -4,167 +4,106 @@ namespace ToolLibrary
 {
     class Program
     {
-        static Dictionary<string, Tool> toolInventory = new Dictionary<string, Tool>();
-        static List<Tool> rentedTools = new List<Tool>();
-        static List<Borrower> borrowers = new List<Borrower>();
-
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Write("Enter 1 if you are a staff or 2 if you are a customer >> ");
-            string userInput = ReadLine() ?? "";
-            int userOption;
-            while (!int.TryParse(userInput, out userOption) || userOption < 1 || userOption > 2)
+            string[] toolCategories = new string[9] { "gardening", "flooring", "fencing", "measuring", "cleaning"
+                                                 "painting", "electronic", "electricity", "automotive"};
+            WriteLine("Welcome to tool management system!");
+            DisplayMenu();
+            ChooseOption();
+        }
+
+        public void DisplayMenu()
+        {
+            WriteLine("1 - Display tool details by category");
+            WriteLine("2 - Add a new tool");
+            WriteLine("3 - Borrow a tool");
+            WriteLine("4 - Return a tool");
+            WriteLine("5 - Exit");
+        }
+
+        public void ChooseOption()
+        {
+            Write("Enter an option number between 1 and 5 >> ");
+            string optionString = ReadLine() ?? "";
+            int optionNumber;
+            while (!int.TryParse(optionString, out optionNumber) || optionNumber < 1 || optionNumber > 2)
             {
-                Write("Invalid option! Please enter either 1 or 2: ");
-                userInput = ReadLine() ?? "";
+                Write("Invalid number! Enter an option number between 1 and 5 >> ");
+                optionString = ReadLine() ?? "";
             }
 
-            //Scenario 1: Staff
-            if (userOption == 1)
+            switch (optionNumber):
             {
-                int staffOption = 1;
-                while (staffOption != 0)
-                {
-                    Write("Enter 1 to add tool to inventory or 0 to quit >> ");
-                    string staffInput = ReadLine() ?? "";
-                    while (!int.TryParse(staffInput, out staffOption) || staffOption > 1)
-                    {
-                        Write("Invalid option! Please enter either 1 or 0 >> ");
-                        staffInput = ReadLine() ?? "";
-                    }
-                    if (staffOption == 1)
-                    {
-                        AddToolToInventory();
-                    }
-                }
-                
-            }
-
-            //Scenario 2: Borrower
-            else
-            {
-                Write("Enter 1 to borrow tools, 2 to return tools or 0 to quit >> ");
-                string borrowerInput = ReadLine() ?? "";
-                int borrowerOption;
-                while (!int.TryParse(borrowerInput, out borrowerOption) || borrowerOption > 2)
-                {
-                    Write("Invalid option! Please enter either 1, 2 or 0 >> ");
-                    borrowerInput = ReadLine() ?? "";
-                }
-                if (borrowerOption == 1)
-                    BorrowTools();
-                else if (borrowerOption == 2)
-                    ReturnTools();
-                else
+                case 1:
+                    DisplayTool();
+                case 2:
+                    AddTool();
+                case 3:
+                    BorrowTool();
+                case 4:
+                    ReturnTool();
+                case 5:
                     return;
-            }
-
-            
-        }
-
-        static void AddToolToInventory()
-        {
-            Write("Enter tool name >> ");
-            string toolName = ReadLine() ?? "";
-
-            if(toolInventory.ContainsKey(toolName))
-            {
-                Write("Tool has already existed. Enter number of additional tool >> ");
-                int numOfTool = Convert.ToInt32(ReadLine());
-                toolInventory[toolName].Quantity += numOfTool;
-            }
-            else
-            {
-                Write("Enter tool description >> ");
-                string toolDescription = ReadLine() ?? "";
-
-                Write("Enter tool quantity >> ");
-                int toolQuantity = Convert.ToInt32(ReadLine());
-
-                Tool newTool = new Tool(toolName, toolDescription, toolQuantity);
-
-                toolInventory.Add(toolName, newTool);
-                WriteLine("Tool has been added to inventory!");
-            }
-        }
-
-        static void DisplayToolsByType()
-        {
-            
-            foreach (ToolCategory category in Enum.GetValues(typeof(ToolCategory)))
-            {
-                WriteLine($"{(int)category + 1}: {category}");
-            }
-
-            Write("Select a tool type number from above list >> ");
-            int selectedType = Convert.ToInt32(ReadLine());
-
-            //var toolsOfType = toolInventory.Values.Where(tool => (int)GetToolCategory(tool.ToolName) == selectedType).OrderBy(Tool => Tool.Name);
-            //foreach (var tool in toolsOfType)
-            //{
-            //    WriteLine("Name: {0}", tool.Name);
-            //    WriteLine("Description: {0}", tool.Description);
-            //    WriteLine("Quantity: {0}", tool.Quantity);
-            //    WriteLine();
-            //}
-        }
-
-        static ToolCategory GetToolCategory(string toolName)
-        {
-            switch (toolName.ToLower())
-            {
-                case "shovel":
-                case "rake":
-                case "pruner":
-                    return ToolCategory.Gardening;
-                case "hammer":
-                case "saw":
-                case "nailgun":
-                    return ToolCategory.Flooring;
-                case "wire cutter":
-                case "fence plier":
-                case "fence post driver":
-                    return ToolCategory.Fencing;
-                case "tape measure":
-                case "level":
-                case "caliper":
-                    return ToolCategory.Measuring;
-                case "broom":
-                case "mop":
-                case "vacuum cleaner":
-                    return ToolCategory.Cleaning;
-                case "paintbrush":
-                case "roller":
-                case "paint tray":
-                    return ToolCategory.Painting;
-                case "multimeter":
-                case "oscilloscope":
-                case "digital logic probe":
-                    return ToolCategory.Electronic;
-                case "wire stripper":
-                case "circuit tester":
-                case "voltage detector":
-                    return ToolCategory.Electricity;
-                case "jack stand":
-                case "lug wrench":
-                case "oil filter wrench":
-                    return ToolCategory.Automotive;
                 default:
-                    return ToolCategory.Gardening;
+                    return ("Invalid option!");
             }
         }
-        static void BorrowTools()
-        {
-            DisplayToolsByType();
-            WriteLine("Enter name of tool that you want to borrow >> ");
-            WriteLine("Enter quantity that you want to borrow >> ");
 
+        public string ChooseCategory()
+        {
+             WriteLine("Categories: ");
+             for (int i = 0; i < toolCategories.Length; i++)
+             {
+                Write("{0}, ", toolCategories[i]);
+             }
+
+             Write("Enter category name from available list above >> ");
+             int categoryString = ReadLine() ?? "";
+             bool foundCategory = false;
+             for (i = 0; i < toolCategories.Length; i++)
+                 {
+                    if (toolCategories == categoryString)
+                      {
+                          foundCategory = true;
+                          break;
+                      }
+                 }
+             while (!foundCategory)
+             {
+                Write("Invalid category! Enter available category name >> ");
+                categoryString = ReadLine()??"";
+                for (i = 0; i < toolCategories.Length; i++)
+                {
+                   if (toolCategories == categoryString)
+                     {
+                         foundCategory = true;
+                         break;
+                     }
+                }
+             }
+             return categoryString;
         }
 
-        static void ReturnTools()
+        public void DisplayTool()
         {
-            WriteLine("Enter name of tool that you want to return >> ");
-            WriteLine("Enter quantity that you want to return >> ");
+            ChooseCategory();
         }
+
+        public void AddTool()
+        {
+            ChooseCategory();
+        }
+
+        public void BorrowTool()
+        {
+            ChooseCategory();
+        }
+
+        public void ReturnTool()
+        {
+            ChooseCategory();
+        }
+
     }
 }
