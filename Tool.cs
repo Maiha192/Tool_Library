@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+
 namespace ToolLibrary
 {
 	public class Tool
@@ -7,27 +9,29 @@ namespace ToolLibrary
 		private string toolDescription;
 		private int toolQuantity;
 
-		public string ToolName
-		{
-			get { return toolName; }
-			set { value = toolName; }
-		}
+        public string ToolName
+        {
+            get { return toolName; }
+            set { toolName = value; }
+        }
 
-		public string ToolDescription
-		{
-		    get { return toolDescription; }
-			set { value = toolDescription; }
-		}
+        public string ToolDescription
+        {
+            get { return toolDescription; }
+            set { toolDescription = value; }
+        }
 
-		public int ToolQuantity
-		{
-		    get { return toolQuantity; }
-			set { value = ToolQuantity;  }
-		}
+        public int ToolQuantity
+        {
+            get { return toolQuantity; }
+            set { toolQuantity = value; }
+        }
 
-		public Tool(string toolName)
+        public Tool(string toolName)
 		{
 			this.toolName = toolName;
+            this.toolDescription = " ";
+            this.toolQuantity = 0;
 		}
 
         public Tool(string toolName, string description, int quantity)
@@ -47,6 +51,11 @@ namespace ToolLibrary
             else
                 return 1;
         }
-	}
+
+        public bool Equals(Tool another)
+        {
+			return this.ToolName.Equals(another.ToolName);
+        }
+    }
 }
 

@@ -94,11 +94,10 @@ namespace ToolLibrary
                         ReturnTool(toolCategories, index);
                         WriteLine();
                         break;
-                    case 5:
-                        return;
                     default:
                         return;
                 }
+                DisplayMenu();
                 optionNumber = ChooseOption();
             }
         }
@@ -177,10 +176,26 @@ namespace ToolLibrary
         // Method to add tool to library
         public static void AddTool(ToolLinkedList[] toolCategories, int index)
         {
-            Write("Enter tool name >> ");
+            Write("Enter a tool name >> ");
             string userInput = ReadLine() ?? "";
             Tool newTool = new Tool(userInput);
-            if (toolCategories[index].SearchTool(newTool))
+            if (toolCategories[index].SearchTool(newTool) == null)
+            {
+                Write("Enter tool description >> ");
+                string newToolDescription = ReadLine() ?? "";
+                Write("Enter tool quantity >> ");
+                string input = ReadLine() ?? "";
+                int newToolQuantity;
+                while (!int.TryParse(input, out newToolQuantity) || newToolQuantity < 1)
+                {
+                    Write("Invalid number! Enter a number greater than 0 >> ");
+                    input = ReadLine() ?? "";
+                }
+                Tool tool = new Tool(userInput, newToolDescription, newToolQuantity);
+                toolCategories[index].InsertNewTool(tool);
+                WriteLine("Tool successfully added to library!");
+            }
+            else
             {
                 WriteLine("Tool exists in the library!");
                 Write("Add quantity to update >> ");
@@ -191,25 +206,8 @@ namespace ToolLibrary
                     Write("Invalid number! Enter a number greater than 0 >> ");
                     quantityInput = ReadLine() ?? "";
                 }
+                toolCategories[index].IncreaseToolQuantity(newTool, quantityNumber);
                 WriteLine("Tool quantity successfully updated!");
-            }
-            else
-            {
-                Write("Enter tool name >> ");
-                string newToolName = ReadLine() ?? "";
-                Write("Enter tool description >> ");
-                string newToolDescription = ReadLine() ?? "";
-                Write("Enter tool quantity >> ");
-                string input = ReadLine() ?? "";
-                int newToolQuantity;
-                while (!int.TryParse(input, out newToolQuantity) || newToolQuantity < 1)
-                {
-                    Write("Invalid number! Enter an option number between 1 and 5 >> ");
-                    input = ReadLine() ?? "";
-                }
-                Tool tool = new Tool(newToolName, newToolDescription, newToolQuantity);
-                toolCategories[index].InsertNewTool(tool);
-                WriteLine("Tool successfully added to library!");
             }
         }
 

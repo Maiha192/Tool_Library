@@ -34,24 +34,22 @@ namespace ToolLibrary
     	}
 
         // Method to search tool
-        public bool SearchTool(Tool tool)
+        public ToolNode SearchTool(Tool tool)
         {
-            bool found = false;
-            ToolNode newToolNode = new ToolNode(tool);
             ToolNode current = Head;
-            while (newToolNode.ATool.CompareTo(current.ATool) != 0)
+            while (current != null)
             {
+                if (tool.Equals(current.ATool))
+                {
+                    return current; // Found the tool, so return the ToolNode
+                }
                 current = current.NextTool;
             }
-            if (newToolNode.ATool.CompareTo(current.ATool) == 0)
-            {
-                found = true;
-            }
-            return found;
+            return null; // Tool not found, return null
         }
 
         // Method to insert a new tool in the list and maintain alphabetical order of tool name
-    	public void InsertNewTool(Tool tool)
+        public void InsertNewTool(Tool tool)
     	{
             ToolNode newNode = new ToolNode(tool);
 
@@ -85,6 +83,16 @@ namespace ToolLibrary
             }
 
             length++;
+        }
+
+        public void IncreaseToolQuantity(Tool tool, int newQuantity)
+        {
+            ToolNode toolNode = SearchTool(tool);
+            if (toolNode != null)
+            {
+                // Found the tool, so update its quantity
+                toolNode.ATool.ToolQuantity += newQuantity;
+            }
         }
 
         public void DisplayTools()
