@@ -51,11 +51,6 @@ namespace ToolLibrary
             else
                 return 1;
         }
-
-        public bool Equals(Tool another)
-        {
-			return this.ToolName.Equals(another.ToolName);
-        }
     }
 }
 

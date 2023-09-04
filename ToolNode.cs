@@ -23,7 +23,7 @@ namespace ToolLibrary
         public ToolNode(Tool tool)
         {
             this.aTool = tool;
-            this.nextTool = null;
+			this.nextTool = null;
         }
 
 		public int CompareTo(ToolNode another)

@@ -5,6 +5,7 @@ namespace ToolLibrary
 {
     class Program
     {
+
         public static void Main(string[] args)
         {
             // Initialise tool categories
@@ -67,6 +68,9 @@ namespace ToolLibrary
             string[] categories = new string[9] { "gardening", "flooring", "fencing", "measuring", "cleaning",
                                                   "painting", "electronic", "electricity", "automotive"};
 
+            Borrower borrower1 = new Borrower("Ha", "Mai", "12345678");
+            BorrowerLinkedList borrowerList = new BorrowerLinkedList(borrower1);
+
             WriteLine("Welcome to tool management system!");
             DisplayMenu();
             int optionNumber = ChooseOption();
@@ -86,12 +90,12 @@ namespace ToolLibrary
                         break;
                     case 3:
                         DisplayTool(toolCategories, index);
-                        BorrowTool(toolCategories, index);
+                        BorrowTool(toolCategories, index, borrowerList);
                         WriteLine();
                         break;
                     case 4:
                         DisplayTool(toolCategories, index);
-                        ReturnTool(toolCategories, index);
+                        ReturnTool(toolCategories, index, borrowerList);
                         WriteLine();
                         break;
                     default:
@@ -212,37 +216,89 @@ namespace ToolLibrary
         }
 
         // Method for user to borrower tool
-        public static void BorrowTool(ToolLinkedList[] toolCategories, int index)
+        public static void BorrowTool(ToolLinkedList[] toolCategories, int index, BorrowerLinkedList borrowerList)
         {
             Write("Enter borrowed tool name>> ");
             string borrowedToolName = ReadLine() ?? "";
+            Tool borrowedTool = new Tool(borrowedToolName);
+            while (toolCategories[index].SearchTool(borrowedTool) == null)
+            {
+                Write("Tool does not exist in this category. Enter available tool name >> ");
+                borrowedToolName = ReadLine() ?? "";
+                borrowedTool = new Tool(borrowedToolName);
+            }
             Write("Enter borrowed tool quantity >> ");
-            int borrowedToolQuantity = Convert.ToInt32(ReadLine());
+            string input = ReadLine() ?? "";
+            int borrowedToolQuantity;
+            while (!int.TryParse(input, out borrowedToolQuantity) || borrowedToolQuantity < 1
+                || borrowedToolQuantity > toolCategories[index].SearchTool(borrowedTool).ATool.ToolQuantity)
+            {
+                Write("Invalid number! Enter a number greater than 0 and not greater than {0} >> ",
+                    toolCategories[index].SearchTool(borrowedTool).ATool.ToolQuantity);
+                input = ReadLine() ?? "";
+            }
+            toolCategories[index].SearchTool(borrowedTool).ATool.ToolQuantity -= borrowedToolQuantity;
+            borrowedTool.ToolQuantity = borrowedToolQuantity;
+
             Write("Enter borrower first name >> ");
             string borrowerFirstName = ReadLine() ?? "";
             Write("Enter borrower last name >> ");
             string borrowerLastName = ReadLine() ?? "";
             Write("Enter borrower mobile number >> ");
             string borrowerMobile = ReadLine() ?? "";
+
+            Borrower newBorrower = new Borrower(borrowerLastName, borrowerFirstName, borrowerMobile);
+
+            if (borrowerList.SearchBorrower(newBorrower) == null)
+            {
+                borrowerList.AddNewBorrower(newBorrower);
+                newBorrower.BorrowedToolsList = new ToolLinkedList(borrowedTool);
+            }
+            else
+                borrowerList.SearchBorrower(newBorrower).ABorrower.BorrowedToolsList.InsertNewTool(borrowedTool);
+
             WriteLine("Tool successfully borrowed!");
         }
 
         // Method for user to return tool
-        public static void ReturnTool(ToolLinkedList[] toolCategories, int index)
+        public static void ReturnTool(ToolLinkedList[] toolCategories, int index, BorrowerLinkedList borrowerList)
         {
-            Write("Enter returned tool name >> ");
-            string returnedToolName = ReadLine() ?? "";
-            Write("Enter returned tool quantity >> ");
-            string returnedToolQuantity = ReadLine() ?? "";
             Write("Enter borrower first name >> ");
             string borrowerFirstName = ReadLine() ?? "";
             Write("Enter borrower last name >> ");
             string borrowerLastName = ReadLine() ?? "";
             Write("Enter borrower mobile number >> ");
             string borrowerMobile = ReadLine() ?? "";
-            WriteLine("Tool succcessfully returned!");
 
+            Borrower borrower = new Borrower(borrowerLastName, borrowerFirstName, borrowerMobile);
+
+            if (borrowerList.SearchBorrower(borrower) == null)
+                WriteLine("No borrower with these details in the record!");
+            else
+            {
+                Write("Enter returned tool name >> ");
+                string returnedToolName = ReadLine() ?? "";
+                Write("Enter returned tool quantity >> ");
+                string input = ReadLine() ?? "";
+                int returnedToolQuantity;
+                while (!int.TryParse(input, out returnedToolQuantity) || returnedToolQuantity < 1)
+                {
+                    Write("Invalid number! Enter a number greater than 0 >> ");
+                    input = ReadLine() ?? "";
+                }
+                Tool returnedTool = new Tool(returnedToolName, " ", returnedToolQuantity);
+                borrowerList.SearchBorrower(borrower).ABorrower.BorrowedToolsList.SearchTool(returnedTool).ATool.ToolQuantity -= returnedToolQuantity;
+                toolCategories[index].SearchTool(returnedTool).ATool.ToolQuantity += returnedToolQuantity;
+                WriteLine("Tool successfully returned! ");
+                if (borrowerList.SearchBorrower(borrower).ABorrower.BorrowedToolsList.SearchTool(returnedTool).ATool.ToolQuantity == 0)
+                {
+                    borrowerList.SearchBorrower(borrower).ABorrower.BorrowedToolsList.RemoveTool(returnedTool);
+                }
+                if (borrowerList.SearchBorrower(borrower).ABorrower.BorrowedToolsList.Head == null)
+                {
+                    borrowerList.RemoveBorrower(borrower);
+                }
+            }
         }
-
     }
 }

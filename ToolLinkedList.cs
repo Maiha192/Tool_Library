@@ -13,17 +13,21 @@ namespace ToolLibrary
         public ToolNode Head
         {
             get { return head; }
+            set { head = value; }
         }
 
         public ToolNode Tail
         {
             get { return tail; }
+            set { tail = value; }
         }
 
         public int Length
         {
             get { return length; }
+            set { length = value; }
         }
+
         // Initialise a linked list of tool by adding the first tool
         public ToolLinkedList(Tool tool)
     	{
@@ -39,7 +43,7 @@ namespace ToolLibrary
             ToolNode current = Head;
             while (current != null)
             {
-                if (tool.Equals(current.ATool))
+                if (tool.CompareTo(current.ATool) == 0)
                 {
                     return current; // Found the tool, so return the ToolNode
                 }
@@ -53,28 +57,32 @@ namespace ToolLibrary
     	{
             ToolNode newNode = new ToolNode(tool);
 
-            // Check if list is empty or new tool name smaller than head tool name alphabetically. If yes new tool will be head.
-            if (head == null || (newNode.ATool.CompareTo(head.ATool) < 0))
+            // Check if head is empty, if yes, add new tool to head
+            if (head == null)
             {
-                newNode.NextTool = head;
                 head = newNode;
-                tail = head;
             }
             else
-            {
-                ToolNode current = head;
-
-                // Find the insertion point.
-                while (current.NextTool != null &&
-                       (newNode.ATool.CompareTo(current.NextTool.ATool) > 0))
+                if (newNode.ATool.CompareTo(head.ATool) < 0)
                 {
-                    current = current.NextTool;
+                    newNode.NextTool = head;
+                    head = newNode;
                 }
+                else
+                {
+                    ToolNode current = head;
 
-                // Insert the new tool after 'current'.
-                newNode.NextTool = current.NextTool;
-                current.NextTool = newNode;
-            }
+                    // Find the insertion point.
+                    while (current.NextTool != null &&
+                           (newNode.ATool.CompareTo(current.NextTool.ATool) > 0))
+                    {
+                        current = current.NextTool;
+                    }
+
+                    // Insert the new tool after 'current'.
+                    newNode.NextTool = current.NextTool;
+                    current.NextTool = newNode;
+                }
 
             // Update the tail if necessary.
             if (newNode.NextTool == null)
@@ -85,7 +93,36 @@ namespace ToolLibrary
             length++;
         }
 
-        public void IncreaseToolQuantity(Tool tool, int newQuantity)
+        public void RemoveTool(Tool tool)
+        {
+            // Check if the tool to remove is the head node
+            if (head.ATool.CompareTo(tool) == 0)
+            {
+                head = head.NextTool;
+                length--;
+                WriteLine("Tool removed from the borrowed list.");
+                return;
+            }
+
+            // Traverse the list to find the tool node before the one to remove
+            ToolNode previous = head;
+            ToolNode current = head.NextTool;
+
+            while (current != null)
+            {
+                if (current.ATool.CompareTo(tool) == 0)
+                {
+                    previous.NextTool = current.NextTool;
+                    length--;
+                    WriteLine("Tool removed from the borrowing list.");
+                    return;
+                }
+
+                previous = current;
+                current = current.NextTool;
+            }
+        }
+            public void IncreaseToolQuantity(Tool tool, int newQuantity)
         {
             ToolNode toolNode = SearchTool(tool);
             if (toolNode != null)
