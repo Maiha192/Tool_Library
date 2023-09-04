@@ -15,6 +15,7 @@ namespace ToolLibrary
         {
             string[] toolCategories = new string[9] { "gardening", "flooring", "fencing", "measuring", "cleaning"
                                                  "painting", "electronic", "electricity", "automotive"};
+            InitialiseToolCategories();
             WriteLine("Welcome to tool management system!");
             DisplayMenu();
             ChooseOption();

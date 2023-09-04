@@ -5,12 +5,25 @@ namespace ToolLibrary
 {
 	public class BorrowerNode
 	{
-	    Borrower aBorrower;
-	    Node nextBorrower;
+	    private Borrower aBorrower;
+	    private BorrowerNode nextBorrower;
 
-	    Node(Borrower borrower)
+	    public BorrowerNode(Borrower borrower)
 	    {
 	        this.aBorrower = borrower;
+	        this.nextBorrower = null;
+	    }
+
+	    public Borrower ABorrower
+	    {
+	        get { return aBorrower; }
+	        set { aBorrower = value; }
+	    }
+
+	    public BorrowerNode NextBorrower;
+	    {
+	        get { return nextBorrower; }
+	        set { nextBorrower = value; }
 	    }
 	}
 }
